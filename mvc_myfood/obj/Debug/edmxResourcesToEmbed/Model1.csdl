@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="myfoodModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="category">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="products" Relationship="Self.FK__product__categor__3E52440B" FromRole="category" ToRole="product" />
+  </EntityType>
+  <EntityType Name="customer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="orders" Relationship="Self.FK__orders__customer__412EB0B6" FromRole="customer" ToRole="orders" />
+  </EntityType>
+  <EntityType Name="order_detail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="price" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="quantity" Type="Int32" />
+    <Property Name="order_id" Type="Int32" />
+    <Property Name="product_id" Type="Int32" />
+    <NavigationProperty Name="order" Relationship="Self.FK__order_det__order__403A8C7D" FromRole="order_detail" ToRole="orders" />
+    <NavigationProperty Name="product" Relationship="Self.FK__order_det__produ__4222D4EF" FromRole="order_detail" ToRole="product" />
+  </EntityType>
+  <EntityType Name="order">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="date" Type="DateTime" Precision="0" />
+    <Property Name="order_total" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="customer_id" Type="Int32" />
+    <NavigationProperty Name="customer" Relationship="Self.FK__orders__customer__412EB0B6" FromRole="orders" ToRole="customer" />
+    <NavigationProperty Name="order_detail" Relationship="Self.FK__order_det__order__403A8C7D" FromRole="orders" ToRole="order_detail" />
+  </EntityType>
+  <EntityType Name="product">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="product_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="product_price" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="category_id" Type="Int32" />
+    <Property Name="product_description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="product_image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="unit_measurement" Type="Decimal" Precision="10" Scale="5" />
+    <NavigationProperty Name="category" Relationship="Self.FK__product__categor__3E52440B" FromRole="product" ToRole="category" />
+    <NavigationProperty Name="order_detail" Relationship="Self.FK__order_det__produ__4222D4EF" FromRole="product" ToRole="order_detail" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK__product__categor__3E52440B">
+    <End Role="category" Type="Self.category" Multiplicity="0..1" />
+    <End Role="product" Type="Self.product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="category">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="product">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__orders__customer__412EB0B6">
+    <End Role="customer" Type="Self.customer" Multiplicity="0..1" />
+    <End Role="orders" Type="Self.order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="orders">
+        <PropertyRef Name="customer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__order_det__order__403A8C7D">
+    <End Role="orders" Type="Self.order" Multiplicity="0..1" />
+    <End Role="order_detail" Type="Self.order_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="orders">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="order_detail">
+        <PropertyRef Name="order_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__order_det__produ__4222D4EF">
+    <End Role="product" Type="Self.product" Multiplicity="0..1" />
+    <End Role="order_detail" Type="Self.order_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="product">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="order_detail">
+        <PropertyRef Name="product_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="myfoodEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="categories" EntityType="Self.category" />
+    <EntitySet Name="customers" EntityType="Self.customer" />
+    <EntitySet Name="order_detail" EntityType="Self.order_detail" />
+    <EntitySet Name="orders" EntityType="Self.order" />
+    <EntitySet Name="products" EntityType="Self.product" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK__product__categor__3E52440B" Association="Self.FK__product__categor__3E52440B">
+      <End Role="category" EntitySet="categories" />
+      <End Role="product" EntitySet="products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__orders__customer__412EB0B6" Association="Self.FK__orders__customer__412EB0B6">
+      <End Role="customer" EntitySet="customers" />
+      <End Role="orders" EntitySet="orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__order_det__order__403A8C7D" Association="Self.FK__order_det__order__403A8C7D">
+      <End Role="orders" EntitySet="orders" />
+      <End Role="order_detail" EntitySet="order_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__order_det__produ__4222D4EF" Association="Self.FK__order_det__produ__4222D4EF">
+      <End Role="product" EntitySet="products" />
+      <End Role="order_detail" EntitySet="order_detail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

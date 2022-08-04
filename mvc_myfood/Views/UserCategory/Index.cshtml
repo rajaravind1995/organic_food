@@ -1,0 +1,26 @@
+﻿@model IEnumerable<mvc_myfood.category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.category_name)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+     {
+        <tr>
+            <td>
+                <a href="">
+                    @Html.DisplayFor(modelItem => item.category_name)
+                </a>
+            </td>
+        </tr>
+     }
+
+</table>

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<mvc_myfood.category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Category Listing</h2>
+
+
+
+<p>
+    @Html.ActionLink("Create New", "Category")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.category_name)
+        </th>
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.category_name)
+    </td>
+   
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+        @Html.ActionLink("Detail", "Detail", new { id = item.id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+    </td>
+</tr>}
+
+</table>
+
